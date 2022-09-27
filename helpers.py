@@ -1,9 +1,7 @@
 import os
 
 import cv2
-import moviepy.editor as mpe
 import numpy as np
-import ffmpeg
 
 
 def _get_dimensions(img, face_position):
@@ -67,28 +65,6 @@ def resize_if_needed(image, face_position, limit):
     return image
 
 
-def downscale(im, size):
-    if im.shape[0] > size or im.shape[1] > size:
-        scale_percent = size / max(im.shape[0], im.shape[1])
-        width = int(im.shape[1] * scale_percent)
-        height = int(im.shape[0] * scale_percent)
-        new_size = (16 * (width // 16), 16 * (height // 16))
-        im = cv2.resize(im, new_size)
-
-    return im
-
-
-def add_sound(video_path, sound_path):
-    # audio = ffmpeg.input(sound_path)
-    # video = ffmpeg.input(video_path)
-    # ffmpeg.concat(video, audio, v=1, a=1).output(video_path).run(overwrite_output=True)
-
-    my_clip = mpe.VideoFileClip(video_path)
-    audio_background = mpe.AudioFileClip(sound_path)
-    # final_audio = mpe.CompositeAudioClip([my_clip.audio, audio_background])
-    final_clip = my_clip.set_audio(audio_background)
-    final_clip.write_videofile("temp.mp4", audio=True, audio_codec="aac")
-    os.remove(video_path)
     os.rename("temp.mp4", video_path)
 
 
