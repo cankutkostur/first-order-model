@@ -49,6 +49,17 @@ def put_face_to_frames(source_image, frames, face_position, smooth_edges=False):
             whole[start_h:start_h + edge, start_w:start_w + edge, :] = face[:, :, :]
         frames[i] = whole
 
+        
+def downscale(im, size):
+    if im.shape[0] > size or im.shape[1] > size:
+        scale_percent = size / max(im.shape[0], im.shape[1])
+        width = int(im.shape[1] * scale_percent)
+        height = int(im.shape[0] * scale_percent)
+        new_size = (16 * (width // 16), 16 * (height // 16))
+        im = cv2.resize(im, new_size)
+
+    return im
+        
 
 def resize_if_needed(image, face_position, limit):
     max_size = limit
@@ -63,19 +74,4 @@ def resize_if_needed(image, face_position, limit):
     image = downscale(image, max_size)
 
     return image
-
-
-    os.rename("temp.mp4", video_path)
-
-    
-def downscale(im, size):
-    if im.shape[0] > size or im.shape[1] > size:
-        scale_percent = size / max(im.shape[0], im.shape[1])
-        width = int(im.shape[1] * scale_percent)
-        height = int(im.shape[0] * scale_percent)
-        new_size = (16 * (width // 16), 16 * (height // 16))
-        im = cv2.resize(im, new_size)
-
-    return im
-
 
