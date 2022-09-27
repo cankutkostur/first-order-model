@@ -67,4 +67,15 @@ def resize_if_needed(image, face_position, limit):
 
     os.rename("temp.mp4", video_path)
 
+    
+def downscale(im, size):
+    if im.shape[0] > size or im.shape[1] > size:
+        scale_percent = size / max(im.shape[0], im.shape[1])
+        width = int(im.shape[1] * scale_percent)
+        height = int(im.shape[0] * scale_percent)
+        new_size = (16 * (width // 16), 16 * (height // 16))
+        im = cv2.resize(im, new_size)
+
+    return im
+
 
